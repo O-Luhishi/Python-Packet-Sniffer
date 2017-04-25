@@ -5,11 +5,12 @@
 
 > Can view:
 
-  > Source 
+  >Source 
   
-  > Target host
+  >Target host
   
-  > Type of protocol e.g. UDP/TCP
+  >Type of protocol e.g. UDP/TCP
   
 > Requires Python (3)
+
 > Can only be run by privileged/administrative users
