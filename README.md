@@ -1,9 +1,9 @@
 # Python-Packet-Sniffer
 > Packet Sniffer Created In Python 3
 
->Allows user to monitor traffic running through the local network
+> Allows user to monitor traffic running through the local network
 
-?Can view:
+> Can view:
 
   > Source 
   
