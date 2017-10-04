@@ -1,16 +1,10 @@
 # Python-Packet-Sniffer
-> Packet Sniffer Created In Python 3
 
-> Allows user to monitor traffic running through the local network
+## Overview
 
-> Can view:
+Packet Sniffer created in Python 3. Allows you to monitor traffic running through local network. Allows the user to be able to view Source of the packets, Target host and the type of protocol used e.g. UDP/TCP.
 
-  >Source 
-  
-  >Target host
-  
-  >Type of protocol e.g. UDP/TCP
-  
-> Requires Python (3)
-
-> Can only be run by privileged/administrative users
+## Requirement
+  - Python 3.x
+  - Privileged/Administrative Rights
+  - Linux or Windows Operating System
