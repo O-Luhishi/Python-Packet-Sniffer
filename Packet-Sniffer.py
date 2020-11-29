@@ -115,13 +115,13 @@ def tcpHeader(newPacket):
     acknNum = packet[3]
     dataOffset = packet[4] >> 12
     reserved = (packet[4] >> 6) & 0x003F
-    tcpFlags = packet[4] & 0x003F  # 1111 1111 1111 1111 & 0000 0000 0011 1111
-    urgFlag = tcpFlags & 0x0020  # 1111 1111 1111 1111 & 0000 0000 0010 0000
-    ackFlag = tcpFlags & 0x0010  # 1111 1111 1111 1111 & 0000 0000 0001 0000
-    pushFlag = tcpFlags & 0x0008  # 1111 1111 1111 1111 & 0000 0000 0000 1000
-    resetFlag = tcpFlags & 0x0004  # 1111 1111 1111 1111 & 0000 0000 0000 0100
-    synFlag = tcpFlags & 0x0002  # 1111 1111 1111 1111 & 0000 0000 0000 0010
-    finFlag = tcpFlags & 0x0001  # 1111 1111 1111 1111 & 0000 0000 0000 0001
+    tcpFlags = packet[4] & 0x003F 
+    urgFlag = tcpFlags & 0x0020 
+    ackFlag = tcpFlags & 0x0010 
+    pushFlag = tcpFlags & 0x0008  
+    resetFlag = tcpFlags & 0x0004 
+    synFlag = tcpFlags & 0x0002 
+    finFlag = tcpFlags & 0x0001 
     window = packet[5]
     checkSum = packet[6]
     urgPntr = packet[7]
@@ -247,18 +247,16 @@ def ipv6Header(data, filter):
 
 # Unpack Ethernet Frame
 def ethernet_frame(data):
-    #dest_mac, src_mac, proto = struct.unpack('! 6s 6s H', data[:14])
-    #return get_mac_addr(dest_mac), get_mac_addr(src_mac), socket.htons(proto), data[14:]
     proto = ""
-    IpHeader = struct.unpack("!6s6sH",data[0:14]) #ipv4==0x0800
-    dstMac = binascii.hexlify(IpHeader[0]) #source MAC address. converts binary data into ascii dt looks like hex. MAC address is always in hex format.
-    srcMac = binascii.hexlify(IpHeader[1]) #Destination MAC address
-    protoType = IpHeader[2] #next protocol (ip/ipv4,arp,icmp,ipv6)
-    nextProto = hex(protoType) #hex() returns a string. it a built in finction
+    IpHeader = struct.unpack("!6s6sH",data[0:14])
+    dstMac = binascii.hexlify(IpHeader[0]) 
+    srcMac = binascii.hexlify(IpHeader[1]) 
+    protoType = IpHeader[2] 
+    nextProto = hex(protoType) 
 
-    if (nextProto == '0x800'): #IP/IPV4 frame ethertype. check if_ether.h for other ether protocol hex values.
+    if (nextProto == '0x800'): 
         proto = 'IPV4'
-    elif (nextProto == '0x86dd'): #IP/IPV6 frame. check if_ethr.h header file
+    elif (nextProto == '0x86dd'): 
         proto = 'IPV6'
 
     data = data[14:]
