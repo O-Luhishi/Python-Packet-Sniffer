@@ -50,14 +50,14 @@ def printPacketsV4(filter, data, raw_data):
     # ICMP
     if proto == 1 and (len(filter) == 0 or filter[1] == 1):
         icmp_type, code, checksum, data = icmp_packet(data)
-        print ("*******************ICMP HEADER***********************")
+        print ("*******************ICMP***********************")
         print ("\tICMP type: %s" % (icmp_type))
         print ("\tICMP code: %s" % (code))
         print ("\tICMP checksum: %s" % (checksum))
 
     # TCP
     elif proto == 6 and (len(filter) == 0 or filter[1] == 6):
-        print("*******************TCPv4 HEADER***********************")
+        print("*******************TCPv4***********************")
         print('Version: {}\nHeader Length: {}\nTTL: {}'.format(version, header_length, ttl))
         print('protocol: {}\nSource: {}\nTarget: {}'.format(proto, src, target))
         src_port, dest_port, sequence, acknowledgment, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin = struct.unpack(
@@ -85,13 +85,12 @@ def printPacketsV4(filter, data, raw_data):
                 print(format_output_line("",data))
     # UDP
     elif proto == 17 and (len(filter) == 0 or filter[1] == 17):
-        print("*******************UDPv4 HEADER***********************")
+        print("*******************UDPv4***********************")
         print('Version: {}\nHeader Length: {}\nTTL: {}'.format(version, header_length, ttl))
         print('protocol: {}\nSource: {}\nTarget: {}'.format(proto, src, target))
         src_port, dest_port, length, data = udp_seg(data)
         print('*****UDP Segment*****')
         print('Source Port: {}\nDestination Port: {}\nLength: {}'.format(src_port, dest_port, length))
-
 
 
 def printPacketsV6(filter, nextProto, newPacket):
@@ -105,6 +104,7 @@ def printPacketsV6(filter, nextProto, newPacket):
         remainingPacket = udpHeader(newPacket)
 
     return remainingPacket
+
 
 def tcpHeader(newPacket):
     # 2 unsigned short,2unsigned Int,4 unsigned short. 2byt+2byt+4byt+4byt+2byt+2byt+2byt+2byt==20byts
@@ -126,7 +126,7 @@ def tcpHeader(newPacket):
     checkSum = packet[6]
     urgPntr = packet[7]
 
-    print ("*******************TCP HEADER***********************")
+    print ("*******************TCP***********************")
     print ("\tSource Port: "+str(srcPort) )
     print ("\tDestination Port: "+str(dstPort) )
     print ("\tSequence Number: "+str(sqncNum) )
@@ -164,7 +164,7 @@ def udpHeader(newPacket):
     lenght = packet[2]
     checkSum = packet[3]
 
-    print ("*******************UDP HEADER***********************")
+    print ("*******************UDP***********************")
     print ("\tSource Port: "+str(srcPort))
     print ("\tDestination Port: "+str(dstPort))
     print ("\tLenght: "+str(lenght))
@@ -179,14 +179,13 @@ def icmpv6Header(data):
     ipv6_icmp_type, ipv6_icmp_code, ipv6_icmp_chekcsum = struct.unpack(
         ">BBH", data[:4])
 
-    print ("*******************ICMPv6 HEADER***********************")
+    print ("*******************ICMPv6***********************")
     print ("\tICMPv6 type: %s" % (ipv6_icmp_type))
     print ("\tICMPv6 code: %s" % (ipv6_icmp_code))
     print ("\tICMPv6 checksum: %s" % (ipv6_icmp_chekcsum))
 
     data = data[4:]
     return data
-
 
 
 def nextHeader(ipv6_next_header):
@@ -213,6 +212,7 @@ def nextHeader(ipv6_next_header):
 
     return ipv6_next_header
 
+
 def ipv6Header(data, filter):
     ipv6_first_word, ipv6_payload_legth, ipv6_next_header, ipv6_hoplimit = struct.unpack(
         ">IHBB", data[0:8])
@@ -229,20 +229,7 @@ def ipv6Header(data, filter):
     ipv6_next_header = nextHeader(ipv6_next_header)
     data = data[40:]
 
-    if filter == "" or filter == ipv6_next_header:
-        print ("*******************IPv6 HEADER***********************")
-        print ("\tVersion: %s" % (version))
-        print ("\tTraffic class: %s" % hex(traffic_class))
-        print ("\tFlow label: %s" % hex(flow_label))
-        print ("\tPayload Length: %s" % (ipv6_payload_legth))
-        print ("\tNext Header: %s" % (ipv6_next_header))
-        print ("\tHop limit: %s" % (ipv6_hoplimit))
-        print ("\tSource Address: %s" % (ipv6_src_ip))
-        print ("\tDestination Address: %s" % (ipv6_dst_ip))
-
-
     return data, ipv6_next_header
-
 
 
 # Unpack Ethernet Frame
